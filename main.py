@@ -1,3 +1,4 @@
+
 import sys
 import argparse
 from pathlib import Path
@@ -12,12 +13,12 @@ def print_banner():
     banner = """
     ╔══════════════════════════════════════════════════════════════╗
     ║                                                              ║
-    ║              🧠 DENOMI-AGENT 🔊                              ║
+    ║                     DENOMI-AGENT                             ║
     ║                                                              ║
-    ║        Sistema de Reconocimiento de Billetes con IA         ║
-    ║           Visión por Computadora + Texto-a-Voz              ║
+    ║        Sistema de Reconocimiento de Billetes con IA          ║
+    ║           Visión por Computadora + Texto-a-Voz               ║
     ║                                                              ║
-    ║              Contribuyendo a la Accesibilidad               ║
+    ║              Contribuyendo a la Accesibilidad                ║
     ║                                                              ║
     ╚══════════════════════════════════════════════════════════════╝
     """
@@ -37,7 +38,7 @@ def check_requirements():
         return False
     
     if not labels_path.exists():
-        print(" ADVERTENCIA: No se encontró el archivo de etiquetas")
+        print("  ADVERTENCIA: No se encontró el archivo de etiquetas")
         print(f"   Esperado en: {labels_path}")
         print("\n Se intentará crear automáticamente durante la carga de datos")
     
@@ -66,6 +67,12 @@ Ejemplos de uso:
   # Con visualización
   python main.py --image test.jpg --visualize
         """
+    )
+    
+    parser.add_argument(
+        '--gradio',
+        action='store_true',
+        help='Lanzar interfaz web con Gradio (recomendado)'
     )
     
     parser.add_argument(
@@ -116,7 +123,7 @@ Ejemplos de uso:
     print_banner()
     
     if args.check:
-        print("🔍 Verificando requisitos del sistema...\n")
+        print(" Verificando requisitos del sistema...\n")
         if check_requirements():
             print("\n Todos los requisitos están cumplidos")
             print(" Puedes ejecutar el agente con: python main.py --interactive")
@@ -141,7 +148,7 @@ Ejemplos de uso:
             agent.run_interactive()
         
         elif args.camera:
-            print("\n Modo Cámara")
+            print("\nModo Cámara")
             print("   Controles: ESPACIO=capturar, ESC=salir\n")
             agent.process_from_camera(speak=not args.no_speak)
         
