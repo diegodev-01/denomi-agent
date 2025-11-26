@@ -13,7 +13,7 @@ def print_banner():
     banner = """
     ╔══════════════════════════════════════════════════════════════╗
     ║                                                              ║
-    ║                     DENOMI-AGENT                             ║
+    ║                    DENOMI-AGENT                              ║
     ║                                                              ║
     ║        Sistema de Reconocimiento de Billetes con IA          ║
     ║           Visión por Computadora + Texto-a-Voz               ║
@@ -26,6 +26,7 @@ def print_banner():
 
 
 def check_requirements():
+    """Verificar que existen los archivos necesarios"""
     model_path = Path("model/mobilenetv2.h5")
     labels_path = Path("model/labels.json")
     
@@ -52,7 +53,10 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Ejemplos de uso:
-  # Modo interactivo (recomendado para comenzar)
+  # Interfaz web con Gradio (RECOMENDADO)
+  python main.py --gradio
+  
+  # Modo interactivo CLI
   python main.py --interactive
   
   # Procesar imagen específica
@@ -123,7 +127,7 @@ Ejemplos de uso:
     print_banner()
     
     if args.check:
-        print(" Verificando requisitos del sistema...\n")
+        print("🔍 Verificando requisitos del sistema...\n")
         if check_requirements():
             print("\n Todos los requisitos están cumplidos")
             print(" Puedes ejecutar el agente con: python main.py --interactive")
@@ -137,6 +141,14 @@ Ejemplos de uso:
         return
     
     try:
+        if args.gradio:
+            print("\n Lanzando interfaz web con Gradio...")
+            print("   La aplicación se abrirá en tu navegador\n")
+            
+            import subprocess
+            subprocess.run(["python", "app_gradio.py"])
+            return
+        
         agent = BillRecognitionAgent(
             model_path=args.model,
             labels_path='model/labels.json',
@@ -148,7 +160,7 @@ Ejemplos de uso:
             agent.run_interactive()
         
         elif args.camera:
-            print("\nModo Cámara")
+            print("\n Modo Cámara")
             print("   Controles: ESPACIO=capturar, ESC=salir\n")
             agent.process_from_camera(speak=not args.no_speak)
         
