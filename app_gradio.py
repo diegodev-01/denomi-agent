@@ -130,13 +130,16 @@ def create_gradio_interface():
         return None
     
     with gr.Blocks(
-        theme=gr.themes.Soft(),
-        title="Reconocedor de Billetes Bolivianos",
-        css="""
-            .gradio-container {font-family: 'Arial', sans-serif;}
-            .output-text {font-size: 1.2em; font-weight: bold;}
-        """
+        title="Reconocedor de Billetes Bolivianos"
     ) as app:
+
+        gr.HTML("""
+            <style>
+                .gradio-container {font-family: 'Arial', sans-serif;}
+                .output-text {font-size: 1.2em; font-weight: bold;}
+            </style>
+        """)
+
         
         # Header
         gr.Markdown(
@@ -162,10 +165,10 @@ def create_gradio_interface():
                     with gr.Column(scale=1):
                         camera_input = gr.Image(
                             sources=["webcam"],
-                            type="numpy",
-                            label="Cámara Web",
-                            mirror_webcam=False
+                            streaming=True,
+                            label="Cámara"
                         )
+
                         
                         camera_tts_checkbox = gr.Checkbox(
                             label=" Habilitar retroalimentación de voz",
