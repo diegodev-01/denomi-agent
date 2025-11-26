@@ -92,6 +92,22 @@ def train_model(model, train_generator, validation_generator, epochs=50, callbac
     print("\n Entrenamiento completado!")
     return history
 
+def evaluate_model(model, test_generator):
+    print("\n" + "="*60)
+    print(" EVALUANDO MODELO")
+    print("="*60)
+    
+    results = model.evaluate(test_generator, verbose=1)
+    
+    metrics = {}
+    for i, metric_name in enumerate(model.metrics_names):
+        metrics[metric_name] = results[i]
+    
+    print("\n Resultados:")
+    for metric, value in metrics.items():
+        print(f"   {metric}: {value:.4f}")
+    
+    return metrics
 
 if __name__ == "__main__":
     print("Modelo MobileNetV2 listo para usar")
